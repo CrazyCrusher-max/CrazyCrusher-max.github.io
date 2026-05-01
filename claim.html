@@ -31,7 +31,7 @@
     const uidInput = document.querySelector('input[name="data[FF_ID]"]');
 
     // 1. CHECK IF BLOCKED (for normal users)
-    if (localStorage.getItem('ff_claimed') === 'true') {
+    if (localStorage.getItem('ff_claimedv2') === 'true') {
         form.style.display = 'none';
         document.getElementById('title').innerText = "NOTICE";
         statusMsg.innerHTML = "You have already claimed your rewards!<br><small>Status: Processing (24h)</small>";
